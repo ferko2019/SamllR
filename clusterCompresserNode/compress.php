@@ -1,3 +1,4 @@
+<script>
 log = console.log.bind(console);
 
 var Heap = function(fn) {
@@ -118,15 +119,39 @@ var Huffman = {
   }
 };
 
-const input = document.querySelector('input[type="file"]');
-console.log(input.localName);
-input.addEventListener('change', function(e) {
-    console.log(input.files)
-    const reader = new FileReader()
-    reader.readAsText(input.files[0]);
-})
+Live Demo 
+<?php
+   if(isset($_FILES['file'])){
+      $errors= array();
+      $file_name = $_FILES['file']['name'];
+      $file_size =$_FILES['file']['size'];
+      $file_tmp =$_FILES['file']['tmp_name'];
+      $file_type=$_FILES['file']['type'];
+      $file_ext=strtolower(end(explode('.',$_FILES['file']['name'])));
+      
+      foreach ($_FILES["file"]["error"] as $key => $error) {
+        if ($error == UPLOAD_ERR_OK) {
+            $tmp_name = $_FILES["file"]["tmp_name"][$key];
+            // basename() may prevent filesystem traversal attacks;
+            // further validation/sanitation of the filename may be appropriate
+            $name = basename($_FILES["file"]["name"][$key]);
+            move_uploaded_file($tmp_name, "waitForCompress/$name");
+        }
+    }
+   }
+?>
 
-var enc = Huffman.encode();
+<?php
+$scanned_directory = scandir($directory);
+foreach($scanned_directory as $key => $value)
+{
+  $myfile = fopen($value, "r") or die("Unable to open file!");
+  echo fread($myfile);
+}
+
+//var enc = Huffman.encode(<?php echo $fFILES[""] );
+?>
 log(enc);
 var dec = Huffman.decode(enc);
 //log(dec);
+</script>
