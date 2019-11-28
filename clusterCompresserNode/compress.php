@@ -1,14 +1,5 @@
-<!DOCTYPE HTMl>
-<html>
-    <head>
-        <title>File compresser</title>
-    </head>
-    <body>
-<<<<<<< HEAD
-        <input type="file" id="data" onchange="handleFiles(this.files)">
-        <!--<script type="text/javascript"  src="newCompressMethod.js" charset="utf-8"></script>-->
-        <script type="text/javascript" charset="utf-8">
-        log = console.log.bind(console);
+<script>
+log = console.log.bind(console);
 
 var Heap = function(fn) {
   this.fn = fn || function(e) {
@@ -128,24 +119,39 @@ var Huffman = {
   }
 };
 
-var inputElement = document.getElementById("input");
-inputElement.addEventListener("change", handleFiles);
-function handleFiles(e) {
-  const fileList = this.files; /* now you can work with the file list */
-  //var henc = Huffman.encode(e[0]);
-  console.log(fileList.result);
+Live Demo 
+<?php
+   if(isset($_FILES['file'])){
+      $errors= array();
+      $file_name = $_FILES['file']['name'];
+      $file_size =$_FILES['file']['size'];
+      $file_tmp =$_FILES['file']['tmp_name'];
+      $file_type=$_FILES['file']['type'];
+      $file_ext=strtolower(end(explode('.',$_FILES['file']['name'])));
+      
+      foreach ($_FILES["file"]["error"] as $key => $error) {
+        if ($error == UPLOAD_ERR_OK) {
+            $tmp_name = $_FILES["file"]["tmp_name"][$key];
+            // basename() may prevent filesystem traversal attacks;
+            // further validation/sanitation of the filename may be appropriate
+            $name = basename($_FILES["file"]["name"][$key]);
+            move_uploaded_file($tmp_name, "waitForCompress/$name");
+        }
+    }
+   }
+?>
+
+<?php
+$scanned_directory = scandir($directory);
+foreach($scanned_directory as $key => $value)
+{
+  $myfile = fopen($value, "r") or die("Unable to open file!");
+  echo fread($myfile);
 }
 
-var enc = Huffman.encode();
+//var enc = Huffman.encode(<?php echo $fFILES[""] );
+?>
 log(enc);
 var dec = Huffman.decode(enc);
-log(dec);
-        </script>
-=======
-        <form action="./clusterCompresserNode/compress.php" enctype="multipart/form-data" method="POST">
-        <input type="file" name="file" id="file">
-        <input type="submit" value="upload">
-        </form>
->>>>>>> 9f73367c4e9f938efe56afbbac7c9df4dd8d745f
-    </body>
-</html>>
+//log(dec);
+</script>
