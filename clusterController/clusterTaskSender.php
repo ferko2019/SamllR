@@ -11,3 +11,10 @@ for(i = 0; i < count($clusterNodes); i++){
 
 echo $workingclusters;
 ?>
+
+<html>
+    <head>
+        <script type="text/javascript">
+        </script>
+    </head>
+</html>
