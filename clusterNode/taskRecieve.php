@@ -3,7 +3,28 @@
 $myfile = fopen($_FILES['data']['tmp_name'], "r") or die("Unable to open file!");
 $nonFormattedText = fread($myfile,filesize($_FILES['data']['tmp_name'])) . "'";
 
-$nonFormattedText = '"' . trim(preg_replace('/\s\s+/', ' ', $nonFormattedText)) . '"';
+$nonFormattedText = trim(preg_replace('/\s\s+/', ' ', $nonFormattedText));
+
+$text = array("");
+$line = 0;
+$nextSwap = 100;
+$currentLine = "";
+for($i = 0; $i < strlen($nonFormattedText); $i++)
+{
+  if($i < $nextSwap)
+  {
+    $currentLine = $currentLine . $nonFormattedText[$i];
+  }
+  if($i == $nextSwap){
+    $currentLine = $currentLine . $nonFormattedText[$i];
+    array_push($text,$currentLine);
+    $nextSwap += 100;
+  }
+  if($i == strlen($nonFormattedText)){
+    $currentLine = $currentLine . $nonFormattedText[$i];
+    array_push($text,$currentLine);
+  }
+}
 fclose($myfile);
 echo $nonFormattedText;
 ?>
@@ -130,7 +151,15 @@ var Huffman = {
   }
 };
 
-var enc = Huffman.encode(<?php echo $nonFormattedText ?>);
+<?php
+foreach($text as $currentLineText)
+{
+  echo ' var enc = Huffman.encode("' . $currentLineText . '");' . "\n";
+  echo "console.log(enc); \n";
+}
+?>
+
+//var enc = Huffman.encode(<?php echo $nonFormattedText ?>);
 console.log(enc);
         </script>
     </head>
